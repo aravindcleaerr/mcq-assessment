@@ -1,5 +1,16 @@
 /* MCQ Assessment — Static Web App Logic */
 
+// ─── Google Sheets Integration ───────────────────────────────────────────────
+function sendToSheet(payload) {
+    if (typeof GOOGLE_SCRIPT_URL === 'undefined' || !GOOGLE_SCRIPT_URL) return;
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+    }).catch(function() { /* silent fail — data is in localStorage anyway */ });
+}
+
 // ─── State ───────────────────────────────────────────────────────────────────
 let state = {
     participant: null,       // { name, dept }
@@ -276,6 +287,21 @@ function submitQuiz(autoSubmit) {
     history.unshift(result);
     localStorage.setItem('mcq_history', JSON.stringify(history));
 
+    // Send to Google Sheet
+    sendToSheet({
+        type: 'quiz',
+        timestamp: result.timestamp,
+        name: result.participant.name,
+        dept: result.participant.dept,
+        mode_name: result.modeName,
+        score: result.score,
+        total: result.total,
+        percentage: result.percentage,
+        passed: result.passed,
+        duration: result.duration,
+        review: result.review.map(r => ({ id: r.id, given: r.given, correct: r.correct, status: r.status }))
+    });
+
     showResult(result);
 }
 
@@ -502,6 +528,29 @@ function submitFeedback() {
     const fbHistory = JSON.parse(localStorage.getItem('mcq_feedback') || '[]');
     fbHistory.push(fb);
     localStorage.setItem('mcq_feedback', JSON.stringify(fbHistory));
+
+    // Send to Google Sheet — separate program ratings from item ratings
+    const progRatings = {};
+    const itemRatings = {};
+    for (const key in feedbackRatings) {
+        if (String(key).startsWith('prog_')) {
+            progRatings[key.replace('prog_', '')] = feedbackRatings[key];
+        } else {
+            itemRatings[key] = feedbackRatings[key];
+        }
+    }
+    sendToSheet({
+        type: 'feedback',
+        timestamp: fb.timestamp,
+        name: fb.participant ? fb.participant.name : '',
+        ratings: itemRatings,
+        program_ratings: progRatings,
+        nps: fb.nps,
+        nps_comment: fb.nps_comment,
+        open_answers: fb.open_answers,
+        trainer_feedback: fb.trainer_feedback,
+        future_training: fb.future_training
+    });
 
     // Show thank you
     document.getElementById('feedback-container').innerHTML = `
