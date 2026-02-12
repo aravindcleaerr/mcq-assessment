@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MCQ Assessment — Industrial Safety Training</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Industrial Safety Training</h1>
+    <p class="subtitle">Akshaya Createch — MCQ Assessment</p>
+</header>
+
+<main>
+
+<!-- ═══════════ HOME VIEW ═══════════ -->
+<section id="view-home">
+    <div class="card">
+        <div class="landing-icon">&#128221;</div>
+        <h2 style="text-align:center;">MCQ Assessment</h2>
+
+        <div class="info-box">
+            Enter your name, select a quiz mode, and press Start. Your score will be calculated automatically.
+            Pass mark: <strong>70%</strong> for all assessments.
+        </div>
+
+        <div class="form-group">
+            <label for="inp-name">Full Name *</label>
+            <input type="text" id="inp-name" placeholder="e.g. Rajesh Kumar" autocomplete="name">
+        </div>
+        <div class="form-group">
+            <label for="inp-dept">Department / Employee ID</label>
+            <input type="text" id="inp-dept" placeholder="e.g. Electrical Maintenance" autocomplete="organization">
+        </div>
+
+        <div class="form-group">
+            <label>Select Quiz Mode</label>
+            <div id="mode-grid" class="mode-grid"></div>
+        </div>
+
+        <button id="btn-start" class="btn btn-primary btn-block btn-lg" onclick="startQuiz()" disabled>
+            Start Quiz
+        </button>
+
+        <button id="btn-history" class="btn btn-outline btn-block hidden" onclick="showHistory()" style="margin-top:0.5rem;">
+            View Past Results
+        </button>
+    </div>
+
+    <footer>
+        Industrial Safety Training — Electrical Safety (SFS 6002) | First Aid (SFS 6002) | EHS (PSK 6803:2024)<br>
+        <a href="https://akshayacreatech.com" target="_blank">Akshaya Createch</a>, Bengaluru
+    </footer>
+</section>
+
+<!-- ═══════════ QUIZ VIEW ═══════════ -->
+<section id="view-quiz" class="hidden">
+    <div class="quiz-header">
+        <span class="quiz-progress" id="q-progress">Q 1 / 15</span>
+        <span class="quiz-timer" id="q-timer">15:00</span>
+    </div>
+    <div class="progress-bar-wrap">
+        <div class="progress-bar" id="q-progress-bar" style="width:0%"></div>
+    </div>
+
+    <div style="text-align:center; margin-bottom:0.5rem;">
+        <span id="quiz-mode-name" style="font-weight:600; font-size:0.85rem; color:var(--primary);"></span><br>
+        <span id="quiz-mode-meta" style="font-size:0.8rem; color:var(--text-light);"></span>
+    </div>
+
+    <div id="q-container" class="question-card"></div>
+
+    <div class="quiz-nav">
+        <button class="btn btn-outline" id="btn-prev" onclick="navQuiz(-1)" disabled>Previous</button>
+        <button class="btn btn-primary" id="btn-next" onclick="navQuiz(1)">Next</button>
+        <button class="btn btn-success hidden" id="btn-submit-quiz" onclick="submitQuiz(false)">Submit</button>
+    </div>
+
+    <div class="question-map" id="q-map"></div>
+</section>
+
+<!-- ═══════════ RESULT VIEW ═══════════ -->
+<section id="view-result" class="hidden">
+    <div id="result-container"></div>
+</section>
+
+<!-- ═══════════ FEEDBACK VIEW ═══════════ -->
+<section id="view-feedback" class="hidden">
+    <div id="feedback-container"></div>
+</section>
+
+<!-- ═══════════ HISTORY VIEW ═══════════ -->
+<section id="view-history" class="hidden">
+    <div class="card">
+        <h2>Quiz History</h2>
+        <div id="history-container"></div>
+    </div>
+    <div style="text-align:center; margin-top:1rem;">
+        <button class="btn btn-outline" onclick="backToHome()">Back to Home</button>
+    </div>
+</section>
+
+</main>
+
+<script src="js/quiz-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
