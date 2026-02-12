@@ -7,4 +7,5 @@
  *
  * Leave as empty string '' to disable (results saved in browser only).
  */
-const GOOGLE_SCRIPT_URL = '';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZaH58qDQZCtsa80iOss0LiaNF1_E7g7k725Xk3I-_Fo4aCwQX4NXSiLg9Ngcaah0i/exec';
+
